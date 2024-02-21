@@ -19,6 +19,8 @@ Route::get('/', function () {
     return view('welcome');
 })->name('ggggg');
 
+Route::get('/a','\App\Http\Controllers\MailController@MyMail');
 
-Route::resource('newsletters',NewslettersController::class);
+// Route::resource('newsletters',NewslettersController::class);
 Route::resource('texts',TextsController::class);
+// Route::view('email.mail', 'viewName');

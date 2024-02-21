@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\text;
 
+use App\Events\EmailEntered;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Text;
+use App\Mail\TestMail;
+use Illuminate\Support\Facades\Mail;
 
 class TextsController extends Controller
 {
@@ -25,7 +28,6 @@ class TextsController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -34,17 +36,34 @@ class TextsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request ,Text $text )
     {
         $validated=$request->validate([
-            'text' => 'required',
+            'text' => 'required|max:120',
         ]);
+          $text->create($validated);
 
-        $text=Text::create([
-            'text' => $request->text,
-        ]);
 
-        return back();
+
+        // $users = User::all();
+        // foreach($users as $user){
+        //     Mail::to($user->email)->send(new TestMail($inputValue));
+        // }
+
+
+
+        // $user = User::find(1);
+        // Mail::to($user->email)
+
+
+       $inputValue = $request->input('text');
+      Mail::to('Taha@gmail.com')->send(new TestMail($inputValue));
+
+      return back()->with('success' , 'Mail has send');
+
+// event(new EmailEntered($inputValue));
+return back()->with('success' , 'Mail has send');
+
     }
 
     /**
